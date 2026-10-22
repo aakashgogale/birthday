@@ -2,12 +2,7 @@
   "name": "birthday-surprise",
   "version": "1.0.0",
   "description": "Mobile-first birthday surprise website",
-  "main": "server.js",
   "scripts": {
-    "dev": "node server.js",
-    "start": "node server.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+    "dev": "node server.js"
+  }
 }
