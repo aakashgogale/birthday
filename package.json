@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Mobile-first birthday surprise website",
   "scripts": {
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "build": "node -e \"const fs = require('fs'); if (!fs.existsSync('public')) fs.mkdirSync('public'); ['index.html','photo1.jpg','photo2.jpg','photo3.jpg'].forEach(f => fs.copyFileSync(f, 'public/' + f));\""
   }
 }

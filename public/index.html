@@ -1,0 +1,2748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Happy Birthday! 🎂✨</title>
+  
+  <!-- Google Fonts for Cute Rounded Handwriting & Aesthetic Body -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Patrick+Hand&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================================
+       CSS VARIABLES & THEME
+       ========================================================= */
+    :root {
+      --bg-cream: #fff9f6;
+      --bg-gingham-pink: rgba(255, 179, 193, 0.28);
+      --pastel-pink: #ff85a1;
+      --pastel-pink-soft: #ffb3c1;
+      --pastel-pink-deep: #fb6f92;
+      --pastel-peach: #ffcad4;
+      --pastel-yellow: #ffe6a7;
+      --pastel-yellow-deep: #ffd166;
+      --pastel-mint: #b7e4c7;
+      --pastel-red: #ff4d6d;
+      --pastel-coral: #ff758f;
+      --text-dark: #4a3b32;
+      --text-muted: #8c786c;
+      --card-bg: rgba(255, 255, 255, 0.94);
+      --shadow-soft: 0 10px 25px rgba(251, 111, 146, 0.18);
+      --shadow-card: 0 14px 30px rgba(74, 59, 50, 0.1);
+      --radius-lg: 28px;
+      --radius-md: 20px;
+      --radius-sm: 14px;
+    }
+
+    /* Reset & Base Setup */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      height: 100dvh;
+      overflow: hidden;
+      background-color: #2b1f24; /* Outside frame backdrop for desktop */
+      font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Gingham / Checkered Background Pattern */
+    .gingham-bg {
+      background-color: var(--bg-cream);
+      background-image: 
+        linear-gradient(90deg, var(--bg-gingham-pink) 50%, transparent 50%),
+        linear-gradient(var(--bg-gingham-pink) 50%, transparent 50%);
+      background-size: 26px 26px;
+    }
+
+    /* =========================================================
+       APP CONTAINER (Mobile-First 100dvh Container)
+       ========================================================= */
+    #app-container {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      height: 100%;
+      height: 100dvh;
+      max-height: 920px;
+      background-color: var(--bg-cream);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    }
+
+    @media (min-width: 441px) {
+      #app-container {
+        border-radius: 36px;
+        height: calc(100dvh - 30px);
+        max-height: 860px;
+        border: 4px solid #fff0f3;
+      }
+    }
+
+    /* Background Canvas for Confetti, Heart Rain & Twinkles */
+    #confetti-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 50;
+    }
+
+    /* =========================================================
+       TOP FLOATING CONTROLS (Music & Setup)
+       ========================================================= */
+    .top-controls {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      right: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 60;
+      pointer-events: none;
+    }
+
+    .control-btn {
+      pointer-events: auto;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(255, 179, 193, 0.5);
+      border-radius: 50px;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: 'Quicksand', sans-serif;
+      color: var(--pastel-pink-deep);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(251, 111, 146, 0.18);
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.2s;
+    }
+    .control-btn:active {
+      transform: scale(0.92);
+    }
+
+    .music-btn {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      border-radius: 50%;
+      justify-content: center;
+    }
+    .music-btn.playing {
+      animation: pulseMusic 2s infinite ease-in-out;
+    }
+
+    @keyframes pulseMusic {
+      0%, 100% { transform: scale(1); box-shadow: 0 4px 12px rgba(251, 111, 146, 0.2); }
+      50% { transform: scale(1.08); box-shadow: 0 6px 18px rgba(251, 111, 146, 0.4); }
+    }
+
+    /* =========================================================
+       SCREEN SYSTEM & TRANSITIONS
+       ========================================================= */
+    .screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 68px 20px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(24px) scale(0.97);
+      transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1), transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 10;
+    }
+
+    .screen.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+      z-index: 20;
+    }
+
+    .screen.exit-left {
+      opacity: 0;
+      transform: translateX(-40px) scale(0.95);
+      pointer-events: none;
+    }
+
+    /* Common Typography & Headings */
+    .title-cursive {
+      font-family: 'Pacifico', cursive;
+      color: var(--pastel-pink-deep);
+      text-align: center;
+      font-weight: 400;
+      text-shadow: 0 2px 8px rgba(251, 111, 146, 0.2);
+    }
+
+    .title-handwritten {
+      font-family: 'Patrick Hand', cursive;
+      color: var(--text-dark);
+      text-align: center;
+    }
+
+    .subtitle-cute {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 6px;
+    }
+
+    /* Common Cute Button */
+    .btn-cute {
+      background: linear-gradient(135deg, #ff85a1 0%, #fb6f92 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 50px;
+      padding: 13px 28px;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      box-shadow: 0 8px 22px rgba(251, 111, 146, 0.38);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s;
+    }
+    .btn-cute:active {
+      transform: scale(0.94);
+    }
+
+    .tap-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--pastel-pink-deep);
+      background: rgba(255, 255, 255, 0.85);
+      padding: 8px 18px;
+      border-radius: 30px;
+      border: 1.5px dashed var(--pastel-pink-soft);
+      animation: floatBob 2s infinite ease-in-out;
+      cursor: pointer;
+      margin-top: 18px;
+      box-shadow: 0 4px 12px rgba(251, 111, 146, 0.15);
+    }
+
+    @keyframes floatBob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-7px); }
+    }
+
+    @keyframes gentlePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    /* =========================================================
+       SCREEN 1: CHOOSE A PENGUIN
+       ========================================================= */
+    #screen-1 {
+      justify-content: space-between;
+      padding-top: 80px;
+      padding-bottom: 40px;
+    }
+
+    .s1-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .badge-pill {
+      background: #ffe3e8;
+      color: var(--pastel-pink-deep);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+
+    .penguins-duo-container {
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      gap: 12px;
+      margin: auto 0;
+    }
+
+    .penguin-card {
+      flex: 1;
+      max-width: 175px;
+      background: rgba(255, 255, 255, 0.82);
+      border-radius: 26px;
+      padding: 16px 10px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      border: 2px solid rgba(255, 179, 193, 0.4);
+      box-shadow: var(--shadow-card);
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s, border-color 0.25s;
+      position: relative;
+    }
+    .penguin-card:active {
+      transform: scale(0.92);
+      border-color: var(--pastel-pink-deep);
+      box-shadow: 0 4px 15px rgba(251, 111, 146, 0.35);
+    }
+
+    .penguin-card.brown-p {
+      animation: floatBob 3.2s infinite ease-in-out;
+    }
+    .penguin-card.grey-p {
+      animation: floatBob 3.2s infinite ease-in-out 0.8s;
+    }
+
+    .penguin-label {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 18px;
+      color: var(--text-dark);
+      font-weight: bold;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .pick-me-tag {
+      position: absolute;
+      top: -10px;
+      background: linear-gradient(135deg, #ffd166, #ffa07a);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(255, 160, 122, 0.4);
+      animation: gentlePulse 1.8s infinite;
+    }
+
+    /* =========================================================
+       SCREEN 2: HAPPY BIRTHDAY CELEBRATION
+       ========================================================= */
+    #screen-2 {
+      justify-content: space-between;
+      padding-top: 70px;
+      padding-bottom: 35px;
+    }
+
+    .bday-title-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .bday-bubbly-text {
+      font-family: 'Pacifico', cursive;
+      font-size: 34px;
+      line-height: 1.2;
+      background: linear-gradient(135deg, #ff4d6d 0%, #ff85a1 40%, #ffd166 80%, #fb6f92 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 3px 8px rgba(255, 77, 109, 0.25));
+      animation: gentlePulse 2.5s infinite ease-in-out;
+    }
+
+    .party-scene-wrap {
+      width: 100%;
+      max-width: 320px;
+      height: 290px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin: auto 0;
+    }
+
+    /* Candle Flame Animation */
+    @keyframes candleFlicker {
+      0%, 100% { transform: scale(1) rotate(-1deg); opacity: 0.95; }
+      25% { transform: scale(1.12, 0.92) rotate(2deg); opacity: 1; }
+      50% { transform: scale(0.9, 1.1) rotate(-2deg); opacity: 0.88; }
+      75% { transform: scale(1.08, 1.05) rotate(1deg); opacity: 1; }
+    }
+    .flame-anim {
+      transform-origin: center bottom;
+      animation: candleFlicker 0.9s infinite ease-in-out;
+    }
+
+    /* Chick Wing Flutter */
+    @keyframes chickFlutter {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(18deg); }
+    }
+    .chick-wing {
+      transform-origin: top left;
+      animation: chickFlutter 0.6s infinite ease-in-out;
+    }
+
+    /* =========================================================
+       SCREEN 3: POLAROID LETTER CARD
+       ========================================================= */
+    #screen-3 {
+      justify-content: flex-start;
+      padding-top: 64px;
+      padding-bottom: 24px;
+      overflow-y: auto;
+    }
+
+    .polaroid-letter-card {
+      width: 100%;
+      max-width: 380px;
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 16px 14px 18px;
+      box-shadow: 0 16px 36px rgba(74, 59, 50, 0.12);
+      border: 1px solid rgba(255, 179, 193, 0.3);
+      position: relative;
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Washi tape accents */
+    .washi-tape-left {
+      position: absolute;
+      top: -12px;
+      left: 18px;
+      width: 60px;
+      height: 22px;
+      background: rgba(255, 193, 7, 0.45);
+      border-left: 2px dashed rgba(255, 193, 7, 0.8);
+      border-right: 2px dashed rgba(255, 193, 7, 0.8);
+      transform: rotate(-7deg);
+      z-index: 5;
+    }
+    .washi-tape-right {
+      position: absolute;
+      top: -12px;
+      right: 18px;
+      width: 60px;
+      height: 22px;
+      background: rgba(255, 133, 161, 0.45);
+      border-left: 2px dashed rgba(255, 133, 161, 0.8);
+      border-right: 2px dashed rgba(255, 133, 161, 0.8);
+      transform: rotate(5deg);
+      z-index: 5;
+    }
+
+    .card-top-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    /* Heart Polaroid Frame */
+    .heart-frame-wrap {
+      width: 120px;
+      height: 120px;
+      min-width: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .heart-photo-box {
+      width: 110px;
+      height: 102px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 4px 10px rgba(251, 111, 146, 0.25));
+    }
+
+    /* SVG Heart Clip-Path */
+    .heart-clipped-content {
+      width: 100%;
+      height: 100%;
+      clip-path: url(#heart-clip-path);
+      -webkit-clip-path: url(#heart-clip-path);
+      background: #ffe3e8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .heart-clipped-content img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+    }
+
+    .photo-caption-tag {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 15px;
+      color: var(--pastel-pink-deep);
+      font-weight: bold;
+      margin-top: 2px;
+    }
+
+    .letter-greeting-header {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .letter-dear {
+      font-family: 'Pacifico', cursive;
+      font-size: 20px;
+      color: var(--pastel-pink-deep);
+    }
+    .letter-tagline {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Handwritten Message Box */
+    .handwritten-message-box {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 16.5px;
+      line-height: 1.5;
+      color: #553e34;
+      background: #fffdf8;
+      border: 1px solid #f6e6da;
+      border-radius: 14px;
+      padding: 12px 14px;
+      position: relative;
+      white-space: pre-line;
+      max-height: 250px;
+      overflow-y: auto;
+    }
+
+    /* Decorative Stickers */
+    .sticker {
+      position: absolute;
+      pointer-events: none;
+      z-index: 10;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.12));
+    }
+    .sticker-camera {
+      bottom: -10px;
+      left: 12px;
+      width: 38px;
+      height: 38px;
+      transform: rotate(-10deg);
+    }
+    .sticker-bunny {
+      top: -16px;
+      right: 48px;
+      width: 36px;
+      height: 36px;
+    }
+    .sticker-cherries {
+      bottom: -12px;
+      right: 18px;
+      width: 38px;
+      height: 38px;
+      transform: rotate(12deg);
+    }
+
+    /* =========================================================
+       SCREEN 4: "BEAUTIFUL" PHOTO GALLERY
+       ========================================================= */
+    #screen-4 {
+      justify-content: space-between;
+      padding-top: 70px;
+      padding-bottom: 30px;
+    }
+
+    .gallery-trio-wrap {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      margin: auto 0;
+    }
+
+    .gallery-cards-row {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+    }
+
+    .gallery-item {
+      flex: 1;
+      max-width: 116px;
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 8px 6px 10px;
+      box-shadow: 0 10px 22px rgba(74, 59, 50, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 1.5px solid rgba(255, 179, 193, 0.4);
+      opacity: 0;
+      transform: translateY(20px) scale(0.9);
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .gallery-item.revealed {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .gallery-item:nth-child(1) { transform: rotate(-3deg); }
+    .gallery-item:nth-child(2) { transform: translateY(-8px) scale(1.05); }
+    .gallery-item:nth-child(3) { transform: rotate(3deg); }
+
+    .gallery-item.revealed:nth-child(1) { transform: rotate(-3deg); }
+    .gallery-item.revealed:nth-child(2) { transform: translateY(-8px) scale(1.05); }
+    .gallery-item.revealed:nth-child(3) { transform: rotate(3deg); }
+
+    .gallery-heart-box {
+      width: 96px;
+      height: 90px;
+      position: relative;
+    }
+
+    .gallery-caption {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 13px;
+      color: var(--text-dark);
+      text-align: center;
+      margin-top: 6px;
+      font-weight: bold;
+    }
+
+    /* =========================================================
+       SCREEN 5: WILL YOU BE MINE?
+       ========================================================= */
+    #screen-5 {
+      justify-content: space-between;
+      padding-top: 68px;
+      padding-bottom: 30px;
+    }
+
+    .mine-title {
+      font-family: 'Pacifico', cursive;
+      font-size: 32px;
+      color: var(--pastel-red);
+      text-align: center;
+      text-shadow: 0 2px 8px rgba(255, 77, 109, 0.25);
+    }
+
+    .mine-collage-container {
+      width: 220px;
+      height: 220px;
+      margin: auto 0;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .big-heart-frame {
+      width: 195px;
+      height: 180px;
+      filter: drop-shadow(0 12px 28px rgba(255, 77, 109, 0.28));
+      position: relative;
+    }
+
+    .wavy-line-accent {
+      width: 140px;
+      height: 12px;
+      margin-top: 8px;
+    }
+
+    .date-tag {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--pastel-pink-deep);
+      background: #ffffff;
+      padding: 4px 14px;
+      border-radius: 20px;
+      box-shadow: 0 3px 10px rgba(251, 111, 146, 0.2);
+      border: 1px dashed var(--pastel-pink);
+      margin-top: 4px;
+    }
+
+    .proposal-buttons-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      width: 100%;
+      position: relative;
+      min-height: 70px;
+    }
+
+    .btn-yes {
+      background: linear-gradient(135deg, #ff4d6d 0%, #fb6f92 100%);
+      color: #fff;
+      font-size: 18px;
+      padding: 13px 32px;
+      border-radius: 50px;
+      font-weight: 700;
+      border: none;
+      box-shadow: 0 8px 24px rgba(255, 77, 109, 0.4);
+      cursor: pointer;
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .btn-no {
+      background: #f1f3f5;
+      color: #868e96;
+      font-size: 16px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-weight: 700;
+      border: 1.5px solid #dee2e6;
+      cursor: pointer;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      transition: left 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* CRYING PENGUIN OVERLAY (When NO is tapped) */
+    .crying-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 245, 248, 0.98);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.9);
+      transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .crying-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+    }
+
+    .crying-penguin-svg {
+      width: 180px;
+      height: 190px;
+      animation: cryTremble 0.3s infinite alternate ease-in-out;
+    }
+
+    @keyframes cryTremble {
+      0% { transform: translateY(0) rotate(-1.5deg); }
+      100% { transform: translateY(-4px) rotate(1.5deg); }
+    }
+
+    .crying-title {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 28px;
+      color: #d90429;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    .crying-subtitle {
+      font-size: 15px;
+      color: #6c757d;
+      text-align: center;
+      margin-top: 4px;
+      margin-bottom: 20px;
+    }
+
+    .btn-try-again {
+      background: linear-gradient(135deg, #ff922b 0%, #f76707 100%);
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
+      padding: 13px 34px;
+      border-radius: 50px;
+      border: none;
+      box-shadow: 0 8px 24px rgba(247, 103, 7, 0.38);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      animation: gentlePulse 1.6s infinite;
+    }
+
+    /* Tears Flow Animation */
+    @keyframes streamTears {
+      0% { stroke-dashoffset: 60; opacity: 1; }
+      80% { opacity: 0.9; }
+      100% { stroke-dashoffset: 0; opacity: 0.4; }
+    }
+    .tear-stream {
+      stroke-dasharray: 60;
+      animation: streamTears 0.7s infinite linear;
+    }
+
+    /* =========================================================
+       SCREEN 6: VIRTUAL HUG
+       ========================================================= */
+    #screen-6 {
+      justify-content: space-between;
+      padding-top: 70px;
+      padding-bottom: 35px;
+    }
+
+    .hug-stage-wrap {
+      width: 100%;
+      height: 290px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: auto 0;
+    }
+
+    .hug-bears-container {
+      width: 290px;
+      height: 200px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .bear-single {
+      position: absolute;
+      width: 145px;
+      height: 165px;
+      transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .bear-yellow {
+      left: 10px;
+      transform: translateX(-40px);
+    }
+    .bear-white {
+      right: 10px;
+      transform: translateX(40px);
+    }
+
+    /* Hugging state */
+    .hug-bears-container.hugging .bear-yellow {
+      transform: translateX(18px);
+    }
+    .hug-bears-container.hugging .bear-white {
+      transform: translateX(-18px);
+    }
+
+    .hug-heart-burst {
+      position: absolute;
+      top: 15px;
+      width: 70px;
+      height: 70px;
+      opacity: 0;
+      transform: scale(0.2);
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.8s;
+      pointer-events: none;
+    }
+    .hug-bears-container.hugging .hug-heart-burst {
+      opacity: 1;
+      transform: scale(1.2);
+      animation: floatBob 2s infinite ease-in-out 1.2s;
+    }
+
+    /* =========================================================
+       SCREEN 7: FINAL LOVE SCREEN (TYPEWRITER & HEART RAIN)
+       ========================================================= */
+    #screen-7 {
+      justify-content: center;
+      padding-top: 60px;
+      padding-bottom: 40px;
+      text-align: center;
+    }
+
+    .final-content-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      max-width: 340px;
+      z-index: 10;
+    }
+
+    .final-heart-icon {
+      width: 74px;
+      height: 74px;
+      margin-bottom: 16px;
+      animation: floatBob 2.5s infinite ease-in-out;
+      filter: drop-shadow(0 6px 18px rgba(255, 77, 109, 0.35));
+    }
+
+    .typewriter-title {
+      font-family: 'Pacifico', cursive;
+      font-size: 38px;
+      color: var(--pastel-red);
+      min-height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-shadow: 0 4px 14px rgba(255, 77, 109, 0.28);
+    }
+
+    .type-cursor {
+      display: inline-block;
+      width: 3px;
+      height: 34px;
+      background-color: var(--pastel-red);
+      margin-left: 4px;
+      border-radius: 2px;
+      animation: blinkCursor 0.8s infinite;
+    }
+
+    @keyframes blinkCursor {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .final-subtext {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 20px;
+      color: #6d4c41;
+      margin-top: 14px;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: all 0.8s ease;
+    }
+    .final-subtext.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .btn-replay {
+      margin-top: 28px;
+      opacity: 0;
+      transform: scale(0.85);
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .btn-replay.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* =========================================================
+       PHOTO SETUP MODAL (Phone Image Picker Fallback)
+       ========================================================= */
+    .setup-modal-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      z-index: 200;
+      display: flex;
+      align-items: flex-end;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .setup-modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .setup-sheet {
+      width: 100%;
+      max-height: 85vh;
+      background: #ffffff;
+      border-radius: 28px 28px 0 0;
+      padding: 22px 20px 30px;
+      overflow-y: auto;
+      transform: translateY(100%);
+      transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+      box-shadow: 0 -10px 40px rgba(0,0,0,0.2);
+    }
+    .setup-modal-overlay.open .setup-sheet {
+      transform: translateY(0);
+    }
+
+    .sheet-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .sheet-title {
+      font-family: 'Pacifico', cursive;
+      font-size: 22px;
+      color: var(--pastel-pink-deep);
+    }
+    .sheet-close-btn {
+      background: #f8f9fa;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .setup-field {
+      margin-bottom: 14px;
+    }
+    .setup-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-dark);
+      display: block;
+      margin-bottom: 6px;
+    }
+    .setup-input, .setup-textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid #ffccd5;
+      border-radius: 12px;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 14px;
+      color: var(--text-dark);
+      background: #fff9fa;
+      outline: none;
+    }
+    .setup-input:focus, .setup-textarea:focus {
+      border-color: var(--pastel-pink-deep);
+      background: #ffffff;
+    }
+
+    .photo-pickers-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .photo-picker-box {
+      border: 1.5px dashed var(--pastel-pink-soft);
+      border-radius: 14px;
+      padding: 10px;
+      text-align: center;
+      background: #fff8f9;
+      cursor: pointer;
+    }
+    .photo-picker-box span {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--pastel-pink-deep);
+      display: block;
+      margin-top: 4px;
+    }
+    .photo-picker-box input {
+      display: none;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .btn-secondary {
+      flex: 1;
+      padding: 12px;
+      border-radius: 50px;
+      border: 1.5px solid #ffccd5;
+      background: #fff;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================
+       GLOBAL SVG DEFINITIONS & HEART CLIP-PATH MASK
+       ========================================================= -->
+  <svg width="0" height="0" style="position: absolute;">
+    <defs>
+      <!-- Perfectly Responsive ObjectBoundingBox Heart Clip-Path -->
+      <clipPath id="heart-clip-path" clipPathUnits="objectBoundingBox">
+        <path d="M 0.5 0.88 C 0.47 0.85, 0.05 0.58, 0.02 0.33 C -0.01 0.12, 0.15 0.02, 0.32 0.02 C 0.43 0.02, 0.48 0.10, 0.50 0.18 C 0.52 0.10, 0.57 0.02, 0.68 0.02 C 0.85 0.02, 1.01 0.12, 0.98 0.33 C 0.95 0.58, 0.53 0.85, 0.50 0.88 Z" />
+      </clipPath>
+    </defs>
+  </svg>
+
+  <!-- =========================================================
+       MAIN APP CONTAINER (Mobile 100dvh Portrait View)
+       ========================================================= -->
+  <main id="app-container" class="gingham-bg">
+
+    <!-- Confetti & Heart Rain Canvas -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Top Floating Controls -->
+    <header class="top-controls">
+      <button id="setup-btn" class="control-btn" aria-label="Setup photos and text">
+        <span>📷</span> Setup
+      </button>
+
+      <button id="music-toggle-btn" class="control-btn music-btn" aria-label="Play or pause background music">
+        <span id="music-icon">🎵</span>
+      </button>
+    </header>
+
+    <!-- =========================================================
+         SCREEN 1: CHOOSE A PENGUIN
+         ========================================================= -->
+    <section id="screen-1" class="screen active" aria-labelledby="s1-heading">
+      <div class="s1-header">
+        <span class="badge-pill">Surprise Inside ✨</span>
+        <h1 id="s1-heading" class="title-cursive" style="font-size: 34px;">Choose a penguin</h1>
+        <p class="subtitle-cute">Pick your favorite little companion 💕</p>
+      </div>
+
+      <!-- Penguin Selection Row -->
+      <div class="penguins-duo-container">
+        <!-- Brown Penguin Card -->
+        <div class="penguin-card brown-p" id="pick-brown-penguin" role="button" tabindex="0" aria-label="Choose Brown Penguin">
+          <span class="pick-me-tag">Tap me! ✨</span>
+          <!-- Brown Penguin SVG -->
+          <svg viewBox="0 0 160 180" width="130" height="150">
+            <defs>
+              <radialGradient id="brownBodyGrad" cx="40%" cy="30%" r="70%">
+                <stop offset="0%" stop-color="#936c5b"/>
+                <stop offset="100%" stop-color="#654538"/>
+              </radialGradient>
+              <radialGradient id="tummyGradCream" cx="50%" cy="40%" r="60%">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="100%" stop-color="#fff5eb"/>
+              </radialGradient>
+            </defs>
+            <!-- Feet -->
+            <ellipse cx="58" cy="162" rx="15" ry="8" fill="#ffa726"/>
+            <ellipse cx="102" cy="162" rx="15" ry="8" fill="#ffa726"/>
+            <!-- Body -->
+            <path d="M 80 18 C 42 18 32 58 32 108 C 32 146 48 162 80 162 C 112 162 128 146 128 108 C 128 58 118 18 80 18 Z" fill="url(#brownBodyGrad)"/>
+            <!-- Belly -->
+            <path d="M 80 60 C 56 60 48 90 48 120 C 48 146 60 156 80 156 C 100 156 112 146 112 120 C 112 90 104 60 80 60 Z" fill="url(#tummyGradCream)"/>
+            <!-- Wings -->
+            <path d="M 36 86 C 22 100 18 124 28 134 C 34 130 38 115 40 100 Z" fill="#654538"/>
+            <path d="M 124 86 C 138 100 142 124 132 134 C 126 130 122 115 120 100 Z" fill="#654538"/>
+            <!-- Cute Eyes -->
+            <ellipse cx="65" cy="58" rx="5.5" ry="7" fill="#2d1e18"/>
+            <circle cx="63" cy="55" r="2.2" fill="#ffffff"/>
+            <circle cx="67" cy="60" r="1.1" fill="#ffffff"/>
+            <ellipse cx="95" cy="58" rx="5.5" ry="7" fill="#2d1e18"/>
+            <circle cx="93" cy="55" r="2.2" fill="#ffffff"/>
+            <circle cx="97" cy="60" r="1.1" fill="#ffffff"/>
+            <!-- Rosy Blush -->
+            <ellipse cx="54" cy="68" rx="7" ry="4" fill="#ff80ab" opacity="0.65"/>
+            <ellipse cx="106" cy="68" rx="7" ry="4" fill="#ff80ab" opacity="0.65"/>
+            <!-- Beak -->
+            <path d="M 73 64 Q 80 60 87 64 Q 80 73 73 64 Z" fill="#ff9800"/>
+            <!-- Pink Gift Box Held -->
+            <g transform="translate(62, 110)">
+              <rect x="0" y="8" width="36" height="30" rx="4" fill="#ff6b8b"/>
+              <rect x="-2" y="4" width="40" height="7" rx="2" fill="#ff85a1"/>
+              <rect x="15" y="4" width="6" height="34" fill="#ffd166"/>
+              <rect x="-2" y="19" width="40" height="6" fill="#ffd166"/>
+              <path d="M 18 4 C 12 -4 5 0 14 4 Z" fill="#ffd166"/>
+              <path d="M 18 4 C 24 -4 31 0 22 4 Z" fill="#ffd166"/>
+              <circle cx="18" cy="4" r="2.5" fill="#f4b236"/>
+            </g>
+            <ellipse cx="62" cy="122" rx="6" ry="8" fill="#54382c" transform="rotate(25, 62, 122)"/>
+            <ellipse cx="98" cy="122" rx="6" ry="8" fill="#54382c" transform="rotate(-25, 98, 122)"/>
+          </svg>
+          <span class="penguin-label">Coco 🌰</span>
+        </div>
+
+        <!-- Grey Penguin Card -->
+        <div class="penguin-card grey-p" id="pick-grey-penguin" role="button" tabindex="0" aria-label="Choose Grey Penguin">
+          <span class="pick-me-tag">Pick me! 💖</span>
+          <!-- Grey Penguin SVG -->
+          <svg viewBox="0 0 160 180" width="130" height="150">
+            <defs>
+              <radialGradient id="greyBodyGrad" cx="40%" cy="30%" r="70%">
+                <stop offset="0%" stop-color="#78909c"/>
+                <stop offset="100%" stop-color="#455a64"/>
+              </radialGradient>
+              <radialGradient id="tummyGradWhite" cx="50%" cy="40%" r="60%">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="100%" stop-color="#f8fafc"/>
+              </radialGradient>
+            </defs>
+            <!-- Feet -->
+            <ellipse cx="58" cy="162" rx="15" ry="8" fill="#ffa726"/>
+            <ellipse cx="102" cy="162" rx="15" ry="8" fill="#ffa726"/>
+            <!-- Body -->
+            <path d="M 80 18 C 42 18 32 58 32 108 C 32 146 48 162 80 162 C 112 162 128 146 128 108 C 128 58 118 18 80 18 Z" fill="url(#greyBodyGrad)"/>
+            <!-- Belly -->
+            <path d="M 80 60 C 56 60 48 90 48 120 C 48 146 60 156 80 156 C 100 156 112 146 112 120 C 112 90 104 60 80 60 Z" fill="url(#tummyGradWhite)"/>
+            <!-- Wings -->
+            <path d="M 36 86 C 22 100 18 124 28 134 C 34 130 38 115 40 100 Z" fill="#37474f"/>
+            <path d="M 124 86 C 138 100 142 124 132 134 C 126 130 122 115 120 100 Z" fill="#37474f"/>
+            <!-- Winking Cute Eyes -->
+            <path d="M 60 59 Q 65 52 70 59" stroke="#1e293b" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <ellipse cx="95" cy="58" rx="5.5" ry="7" fill="#1e293b"/>
+            <circle cx="93" cy="55" r="2.2" fill="#ffffff"/>
+            <circle cx="97" cy="60" r="1.1" fill="#ffffff"/>
+            <!-- Blush -->
+            <ellipse cx="54" cy="68" rx="7" ry="4" fill="#ff80ab" opacity="0.65"/>
+            <ellipse cx="106" cy="68" rx="7" ry="4" fill="#ff80ab" opacity="0.65"/>
+            <!-- Beak -->
+            <path d="M 73 64 Q 80 60 87 64 Q 80 73 73 64 Z" fill="#ff9800"/>
+            <!-- Pink Gift Box Held -->
+            <g transform="translate(62, 110)">
+              <rect x="0" y="8" width="36" height="30" rx="4" fill="#f48fb1"/>
+              <rect x="-2" y="4" width="40" height="7" rx="2" fill="#f06292"/>
+              <rect x="15" y="4" width="6" height="34" fill="#fff9c4"/>
+              <rect x="-2" y="19" width="40" height="6" fill="#fff9c4"/>
+              <path d="M 18 4 C 12 -4 5 0 14 4 Z" fill="#fff9c4"/>
+              <path d="M 18 4 C 24 -4 31 0 22 4 Z" fill="#fff9c4"/>
+              <circle cx="18" cy="4" r="2.5" fill="#ffe082"/>
+            </g>
+            <ellipse cx="62" cy="122" rx="6" ry="8" fill="#263238" transform="rotate(25, 62, 122)"/>
+            <ellipse cx="98" cy="122" rx="6" ry="8" fill="#263238" transform="rotate(-25, 98, 122)"/>
+          </svg>
+          <span class="penguin-label">Pebble ☁️</span>
+        </div>
+      </div>
+
+      <div class="tap-hint" id="s1-tap-hint">
+        <span>👇 Tap either penguin to open!</span>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 2: HAPPY BIRTHDAY CELEBRATION
+         ========================================================= -->
+    <section id="screen-2" class="screen" aria-labelledby="s2-heading">
+      <div class="bday-title-wrap">
+        <span class="badge-pill">Today Is All About You 🎉</span>
+        <h2 id="s2-heading" class="bday-bubbly-text">HAPPY BIRTHDAY</h2>
+        <p class="subtitle-cute" id="recipient-name-subtitle">Wishing you endless smiles & cake! 🍰</p>
+      </div>
+
+      <!-- Party Scene: Hat Penguin + Cake + Yellow Chick + Gifts -->
+      <div class="party-scene-wrap" id="s2-scene">
+        <svg viewBox="0 0 320 280" width="100%" height="100%">
+          <defs>
+            <radialGradient id="cakeCream" cx="50%" cy="30%" r="70%">
+              <stop offset="0%" stop-color="#fff5f5"/>
+              <stop offset="100%" stop-color="#ffe3e8"/>
+            </radialGradient>
+            <radialGradient id="cakeBase" cx="50%" cy="30%" r="70%">
+              <stop offset="0%" stop-color="#ffb3c1"/>
+              <stop offset="100%" stop-color="#fb6f92"/>
+            </radialGradient>
+            <radialGradient id="chickGrad" cx="40%" cy="30%" r="70%">
+              <stop offset="0%" stop-color="#fff3b0"/>
+              <stop offset="100%" stop-color="#ffd166"/>
+            </radialGradient>
+            <radialGradient id="flameGrad" cx="50%" cy="80%" r="80%">
+              <stop offset="0%" stop-color="#fff176"/>
+              <stop offset="50%" stop-color="#ff9800"/>
+              <stop offset="100%" stop-color="#f44336"/>
+            </radialGradient>
+          </defs>
+
+          <!-- Shadow floor -->
+          <ellipse cx="160" cy="256" rx="120" ry="12" fill="rgba(251,111,146,0.14)"/>
+
+          <!-- PARTY PENGUIN (Center) -->
+          <g transform="translate(75, 45)">
+            <!-- Feet -->
+            <ellipse cx="48" cy="180" rx="14" ry="7" fill="#ffa726"/>
+            <ellipse cx="88" cy="180" rx="14" ry="7" fill="#ffa726"/>
+            <!-- Penguin Body -->
+            <path d="M 68 45 C 36 45 28 80 28 125 C 28 160 40 178 68 178 C 96 178 108 160 108 125 C 108 80 100 45 68 45 Z" fill="#6d4c41"/>
+            <path d="M 68 80 C 48 80 40 105 40 132 C 40 156 50 172 68 172 C 86 172 96 156 96 132 C 96 105 88 80 68 80 Z" fill="#fff5eb"/>
+            <!-- Happy Eyes -->
+            <path d="M 52 75 Q 57 70 62 75" stroke="#2d1e18" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+            <path d="M 74 75 Q 79 70 84 75" stroke="#2d1e18" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+            <ellipse cx="46" cy="82" rx="6" ry="3.5" fill="#ff80ab" opacity="0.7"/>
+            <ellipse cx="90" cy="82" rx="6" ry="3.5" fill="#ff80ab" opacity="0.7"/>
+            <!-- Beak -->
+            <path d="M 63 78 Q 68 75 73 78 Q 68 86 63 78 Z" fill="#ff9800"/>
+
+            <!-- Striped Party Cone Hat -->
+            <g transform="translate(68, 46)">
+              <polygon points="0,-44 -16,0 16,0" fill="#ffd166"/>
+              <!-- Hat Stripes -->
+              <polygon points="-5,-14 5,-14 9,-2 0,-2" fill="#ff4d6d"/>
+              <polygon points="-3,-28 3,-28 5,-20 -5,-20" fill="#06d6a0"/>
+              <!-- Pom Pom -->
+              <circle cx="0" cy="-44" r="5" fill="#ff4d6d"/>
+            </g>
+
+            <!-- TWO-TIER BIRTHDAY CAKE HELD IN HANDS -->
+            <g transform="translate(26, 126)">
+              <!-- Bottom Cake Tier -->
+              <rect x="10" y="24" width="64" height="28" rx="6" fill="url(#cakeBase)"/>
+              <!-- Frosting Drips -->
+              <path d="M 10 32 C 14 36 18 36 22 32 C 26 38 30 38 34 32 C 38 37 42 37 46 32 C 50 38 54 38 58 32 C 62 37 66 37 74 32 L 74 24 L 10 24 Z" fill="url(#cakeCream)"/>
+              
+              <!-- Top Cake Tier -->
+              <rect x="20" y="6" width="44" height="20" rx="5" fill="url(#cakeCream)"/>
+              <path d="M 20 12 C 24 16 28 16 32 12 C 36 17 40 17 44 12 C 48 16 52 16 56 12 C 60 16 64 16 64 12 L 64 6 L 20 6 Z" fill="#ff85a1"/>
+
+              <!-- Strawberry / Cherries on Top -->
+              <circle cx="28" cy="5" r="3.5" fill="#ff4d6d"/>
+              <circle cx="56" cy="5" r="3.5" fill="#ff4d6d"/>
+
+              <!-- Candle in Center -->
+              <rect x="40" y="-8" width="4" height="14" rx="1.5" fill="#06d6a0"/>
+              <line x1="42" y1="-8" x2="42" y2="-12" stroke="#2d1e18" stroke-width="1.2"/>
+              <!-- Flickering Candle Flame -->
+              <g class="flame-anim" style="transform-origin: 42px -12px;">
+                <ellipse cx="42" cy="-17" rx="4.5" ry="7" fill="url(#flameGrad)"/>
+                <ellipse cx="42" cy="-15" rx="2" ry="3.5" fill="#ffffff" opacity="0.9"/>
+              </g>
+            </g>
+
+            <!-- Penguin Hands Holding Cake Plate -->
+            <ellipse cx="32" cy="148" rx="6" ry="7" fill="#54382c" transform="rotate(30, 32, 148)"/>
+            <ellipse cx="104" cy="148" rx="6" ry="7" fill="#54382c" transform="rotate(-30, 104, 148)"/>
+          </g>
+
+          <!-- ADORABLE YELLOW CHICK (Right Side) -->
+          <g transform="translate(210, 160)">
+            <!-- Feet -->
+            <line x1="24" y1="62" x2="20" y2="70" stroke="#ff9800" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="36" y1="62" x2="40" y2="70" stroke="#ff9800" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- Chick Round Body -->
+            <ellipse cx="30" cy="40" rx="22" ry="24" fill="url(#chickGrad)"/>
+            <!-- Chick Head Tuft -->
+            <path d="M 30 16 Q 32 8 36 12 Q 33 16 30 16" fill="#ffd166"/>
+            <!-- Chick Eyes -->
+            <ellipse cx="36" cy="36" rx="2.5" ry="3.5" fill="#2d1e18"/>
+            <circle cx="35" cy="34" r="1" fill="#ffffff"/>
+            <!-- Blush -->
+            <ellipse cx="38" cy="44" rx="3.5" ry="2" fill="#ff80ab" opacity="0.7"/>
+            <!-- Tiny Beak -->
+            <path d="M 42 38 L 48 40 L 42 43 Z" fill="#ff9800"/>
+            <!-- Flapping Wing -->
+            <path class="chick-wing" d="M 14 38 Q 6 44 14 50 Q 20 44 14 38 Z" fill="#ffca3a"/>
+            <!-- Little party bow -->
+            <path d="M 28 58 C 24 54 20 62 28 58 C 36 62 32 54 28 58 Z" fill="#ff4d6d"/>
+          </g>
+
+          <!-- GIFT BOXES (Left Side) -->
+          <g transform="translate(24, 185)">
+            <rect x="0" y="10" width="34" height="30" rx="4" fill="#06d6a0"/>
+            <rect x="-2" y="6" width="38" height="7" rx="2" fill="#38b000"/>
+            <rect x="14" y="6" width="6" height="34" fill="#ffd166"/>
+            <circle cx="17" cy="6" r="3" fill="#ff4d6d"/>
+          </g>
+          <g transform="translate(48, 205)">
+            <rect x="0" y="8" width="24" height="20" rx="3" fill="#ffd166"/>
+            <rect x="-1" y="5" width="26" height="5" rx="1.5" fill="#ffca3a"/>
+            <rect x="10" y="5" width="4" height="23" fill="#ff85a1"/>
+          </g>
+
+          <!-- Sparkles Around -->
+          <g fill="#ffd166" opacity="0.85">
+            <polygon points="50,45 52,50 57,52 52,54 50,59 48,54 43,52 48,50"/>
+            <polygon points="260,70 262,75 267,77 262,79 260,84 258,79 253,77 258,75"/>
+            <polygon points="160,25 162,28 165,29 162,30 160,33 158,30 155,29 158,28"/>
+          </g>
+        </svg>
+      </div>
+
+      <button id="s2-continue-btn" class="tap-hint" style="margin-top: 0;">
+        <span>Tap to open your letter 💌 ➔</span>
+      </button>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 3: POLAROID LETTER CARD
+         ========================================================= -->
+    <section id="screen-3" class="screen" aria-labelledby="s3-heading">
+      <h2 id="s3-heading" class="title-cursive" style="font-size: 30px; margin-bottom: 4px;">A Letter For You 💌</h2>
+
+      <!-- Polaroid Card with Heart Photo Frame & Handwritten Message -->
+      <article class="polaroid-letter-card">
+        <!-- Washi Tape Strips -->
+        <div class="washi-tape-left"></div>
+        <div class="washi-tape-right"></div>
+
+        <!-- Stickers -->
+        <!-- Vintage Camera Sticker -->
+        <svg class="sticker sticker-camera" viewBox="0 0 40 40">
+          <rect x="4" y="10" width="32" height="24" rx="6" fill="#ffb3c1"/>
+          <rect x="12" y="6" width="10" height="5" rx="2" fill="#fb6f92"/>
+          <circle cx="20" cy="22" r="7" fill="#ffffff"/>
+          <circle cx="20" cy="22" r="5" fill="#fb6f92"/>
+          <circle cx="22" cy="20" r="1.5" fill="#ffffff"/>
+          <circle cx="9" cy="14" r="2" fill="#ffd166"/>
+        </svg>
+
+        <!-- Bunny Head Sticker -->
+        <svg class="sticker sticker-bunny" viewBox="0 0 40 40">
+          <ellipse cx="14" cy="10" rx="4" ry="10" fill="#ffffff" stroke="#ffccd5" stroke-width="1.2"/>
+          <ellipse cx="14" cy="10" rx="2" ry="7" fill="#ffb3c1"/>
+          <ellipse cx="26" cy="10" rx="4" ry="10" fill="#ffffff" stroke="#ffccd5" stroke-width="1.2"/>
+          <ellipse cx="26" cy="10" rx="2" ry="7" fill="#ffb3c1"/>
+          <ellipse cx="20" cy="24" rx="14" ry="12" fill="#ffffff" stroke="#ffccd5" stroke-width="1.2"/>
+          <circle cx="15" cy="23" r="1.8" fill="#4a3b32"/>
+          <circle cx="25" cy="23" r="1.8" fill="#4a3b32"/>
+          <polygon points="19,26 21,26 20,28" fill="#fb6f92"/>
+          <ellipse cx="12" cy="27" rx="2.5" ry="1.5" fill="#ff80ab" opacity="0.6"/>
+          <ellipse cx="28" cy="27" rx="2.5" ry="1.5" fill="#ff80ab" opacity="0.6"/>
+        </svg>
+
+        <!-- Cherries Sticker -->
+        <svg class="sticker sticker-cherries" viewBox="0 0 40 40">
+          <path d="M 14 26 C 14 16 22 10 24 8" stroke="#38b000" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          <path d="M 26 26 C 26 16 22 10 24 8" stroke="#38b000" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          <path d="M 24 8 Q 28 6 30 10 Q 26 11 24 8 Z" fill="#70e000"/>
+          <circle cx="14" cy="26" r="6.5" fill="#d90429"/>
+          <circle cx="12" cy="24" r="1.8" fill="#ffffff"/>
+          <circle cx="26" cy="26" r="6.5" fill="#d90429"/>
+          <circle cx="24" cy="24" r="1.8" fill="#ffffff"/>
+        </svg>
+
+        <!-- Top Row: Heart Frame + Header -->
+        <div class="card-top-row">
+          <div class="heart-frame-wrap">
+            <div class="heart-photo-box">
+              <div class="heart-clipped-content" id="letter-photo-slot">
+                <!-- Fallback Cute Cartoon Illustration Placeholder -->
+                <svg viewBox="0 0 100 100" width="100%" height="100%">
+                  <rect width="100" height="100" fill="#fff0f3"/>
+                  <!-- Cute Chibi Bunny with Heart Flower -->
+                  <g transform="translate(18, 12)">
+                    <ellipse cx="20" cy="14" rx="4" ry="12" fill="#fff" stroke="#ffccd5" stroke-width="1.2"/>
+                    <ellipse cx="20" cy="14" rx="2" ry="8" fill="#ffb3c1"/>
+                    <ellipse cx="44" cy="14" rx="4" ry="12" fill="#fff" stroke="#ffccd5" stroke-width="1.2"/>
+                    <ellipse cx="44" cy="14" rx="2" ry="8" fill="#ffb3c1"/>
+                    <ellipse cx="32" cy="38" rx="22" ry="18" fill="#fff"/>
+                    <circle cx="24" cy="36" r="2.5" fill="#2d1e18"/>
+                    <circle cx="23" cy="35" r="0.9" fill="#fff"/>
+                    <circle cx="40" cy="36" r="2.5" fill="#2d1e18"/>
+                    <circle cx="39" cy="35" r="0.9" fill="#fff"/>
+                    <ellipse cx="19" cy="42" rx="3.5" ry="2" fill="#ff80ab" opacity="0.6"/>
+                    <ellipse cx="45" cy="42" rx="3.5" ry="2" fill="#ff80ab" opacity="0.6"/>
+                    <polygon points="31,40 33,40 32,42" fill="#fb6f92"/>
+                    <!-- Little Pink Flower -->
+                    <circle cx="50" cy="48" r="4" fill="#ff4d6d"/>
+                    <circle cx="50" cy="48" r="1.5" fill="#ffd166"/>
+                  </g>
+                </svg>
+              </div>
+            </div>
+            <span class="photo-caption-tag" id="letter-caption-tag">Cutie 🌸</span>
+          </div>
+
+          <div class="letter-greeting-header">
+            <span class="letter-dear" id="letter-dear-title">Dearest,</span>
+            <span class="letter-tagline">A special birthday wish from my heart ✨</span>
+          </div>
+        </div>
+
+        <!-- Handwritten Message Body -->
+        <div class="handwritten-message-box" id="letter-message-content">
+          Loading your sweet message...
+        </div>
+      </article>
+
+      <button id="s3-continue-btn" class="btn-cute" style="margin-top: 18px;">
+        <span>See Beautiful Moments 🌸 ➔</span>
+      </button>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 4: "BEAUTIFUL" PHOTO GALLERY
+         ========================================================= -->
+    <section id="screen-4" class="screen" aria-labelledby="s4-heading">
+      <div style="text-align: center;">
+        <span class="badge-pill">Sweet Memories ✨</span>
+        <h2 id="s4-heading" class="title-cursive" style="font-size: 36px;">Beautiful</h2>
+        <p class="subtitle-cute">Every single side of you is pure magic 💖</p>
+      </div>
+
+      <!-- 3 Heart Photo Frames (Side by Side Staggered) -->
+      <div class="gallery-trio-wrap">
+        <div class="gallery-cards-row">
+          
+          <!-- Gallery Item 1 -->
+          <div class="gallery-item" id="gallery-card-1">
+            <div class="gallery-heart-box">
+              <div class="heart-clipped-content" id="gallery-slot-1">
+                <!-- Cartoon Placeholder 1: Sweet Chibi Girl -->
+                <svg viewBox="0 0 100 100" width="100%" height="100%">
+                  <rect width="100" height="100" fill="#fff5eb"/>
+                  <g transform="translate(18, 14)">
+                    <circle cx="32" cy="32" r="22" fill="#ffd8c2"/>
+                    <!-- Hair -->
+                    <path d="M 12 32 C 12 10 52 10 52 32 C 54 20 46 16 32 16 C 18 16 10 20 12 32 Z" fill="#6d4c41"/>
+                    <path d="M 10 32 Q 8 46 12 50 Q 15 40 14 32 Z" fill="#6d4c41"/>
+                    <path d="M 54 32 Q 56 46 52 50 Q 49 40 50 32 Z" fill="#6d4c41"/>
+                    <!-- Flower pin -->
+                    <circle cx="44" cy="20" r="4" fill="#ff4d6d"/>
+                    <circle cx="44" cy="20" r="1.5" fill="#ffd166"/>
+                    <!-- Happy Eyes -->
+                    <ellipse cx="24" cy="32" rx="2.2" ry="3.2" fill="#2d1e18"/>
+                    <ellipse cx="40" cy="32" rx="2.2" ry="3.2" fill="#2d1e18"/>
+                    <ellipse cx="19" cy="38" rx="3.5" ry="2" fill="#ff80ab" opacity="0.6"/>
+                    <ellipse cx="45" cy="38" rx="3.5" ry="2" fill="#ff80ab" opacity="0.6"/>
+                    <path d="M 29 38 Q 32 42 35 38" stroke="#2d1e18" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                  </g>
+                </svg>
+              </div>
+            </div>
+            <span class="gallery-caption" id="gallery-cap-1">Sweet Smile ✨</span>
+          </div>
+
+          <!-- Gallery Item 2 (Center, Elevated) -->
+          <div class="gallery-item" id="gallery-card-2">
+            <div class="gallery-heart-box">
+              <div class="heart-clipped-content" id="gallery-slot-2">
+                <!-- Cartoon Placeholder 2: Cute Bear with Tulips -->
+                <svg viewBox="0 0 100 100" width="100%" height="100%">
+                  <rect width="100" height="100" fill="#fff0f3"/>
+                  <g transform="translate(18, 12)">
+                    <circle cx="16" cy="18" r="7" fill="#f6c46d"/>
+                    <circle cx="16" cy="18" r="4" fill="#ffccd5"/>
+                    <circle cx="48" cy="18" r="7" fill="#f6c46d"/>
+                    <circle cx="48" cy="18" r="4" fill="#ffccd5"/>
+                    <circle cx="32" cy="34" r="20" fill="#f6c46d"/>
+                    <ellipse cx="32" cy="39" rx="8" ry="6" fill="#fff8e7"/>
+                    <ellipse cx="32" cy="36" rx="2.5" ry="1.8" fill="#4a3b32"/>
+                    <ellipse cx="24" cy="32" rx="2" ry="3" fill="#2d1e18"/>
+                    <ellipse cx="40" cy="32" rx="2" ry="3" fill="#2d1e18"/>
+                    <ellipse cx="20" cy="38" rx="3" ry="1.8" fill="#ff80ab" opacity="0.6"/>
+                    <ellipse cx="44" cy="38" rx="3" ry="1.8" fill="#ff80ab" opacity="0.6"/>
+                    <!-- Tulips -->
+                    <path d="M 28 48 C 24 40 32 40 28 48" fill="#ff4d6d"/>
+                    <path d="M 36 48 C 32 40 40 40 36 48" fill="#ff85a1"/>
+                  </g>
+                </svg>
+              </div>
+            </div>
+            <span class="gallery-caption" id="gallery-cap-2">Prettiest 🌸</span>
+          </div>
+
+          <!-- Gallery Item 3 -->
+          <div class="gallery-item" id="gallery-card-3">
+            <div class="gallery-heart-box">
+              <div class="heart-clipped-content" id="gallery-slot-3">
+                <!-- Cartoon Placeholder 3: Cute Kitten with Ribbon -->
+                <svg viewBox="0 0 100 100" width="100%" height="100%">
+                  <rect width="100" height="100" fill="#f3f0ff"/>
+                  <g transform="translate(18, 12)">
+                    <polygon points="14,14 24,24 10,26" fill="#ffffff" stroke="#e0d4fc" stroke-width="1.2"/>
+                    <polygon points="14,16 20,22 12,24" fill="#ffccd5"/>
+                    <polygon points="50,14 40,24 54,26" fill="#ffffff" stroke="#e0d4fc" stroke-width="1.2"/>
+                    <polygon points="50,16 44,22 52,24" fill="#ffccd5"/>
+                    <circle cx="32" cy="34" r="19" fill="#ffffff" stroke="#e0d4fc" stroke-width="1"/>
+                    <ellipse cx="24" cy="32" rx="2.2" ry="3.2" fill="#2d1e18"/>
+                    <ellipse cx="40" cy="32" rx="2.2" ry="3.2" fill="#2d1e18"/>
+                    <ellipse cx="19" cy="38" rx="3" ry="1.8" fill="#ff80ab" opacity="0.6"/>
+                    <ellipse cx="45" cy="38" rx="3" ry="1.8" fill="#ff80ab" opacity="0.6"/>
+                    <polygon points="31,36 33,36 32,38" fill="#ff85a1"/>
+                    <!-- Bow -->
+                    <path d="M 32 48 C 26 44 26 52 32 48 C 38 44 38 52 32 48 Z" fill="#b5179e"/>
+                  </g>
+                </svg>
+              </div>
+            </div>
+            <span class="gallery-caption" id="gallery-cap-3">Forever View 💖</span>
+          </div>
+
+        </div>
+      </div>
+
+      <button id="s4-continue-btn" class="btn-cute">
+        <span>One Important Question 💌 ➔</span>
+      </button>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 5: WILL YOU BE MINE?
+         ========================================================= -->
+    <section id="screen-5" class="screen" aria-labelledby="s5-heading">
+      <div style="text-align: center;">
+        <span class="badge-pill">A Question From My Heart 💖</span>
+        <h2 id="s5-heading" class="mine-title">Will you be mine?</h2>
+      </div>
+
+      <!-- Large Heart Collage / Photo Frame with Wavy Line & Date -->
+      <div class="mine-collage-container">
+        <div class="big-heart-frame">
+          <div class="heart-clipped-content" id="mine-collage-slot">
+            <!-- Default Cartoon Romantic Couple Placeholder -->
+            <svg viewBox="0 0 180 180" width="100%" height="100%">
+              <rect width="180" height="180" fill="#fff0f3"/>
+              <!-- Two Chibi Bears Holding a Big Heart -->
+              <g transform="translate(20, 25)">
+                <!-- Left Teddy Bear -->
+                <circle cx="34" cy="38" r="8" fill="#f6c46d"/>
+                <circle cx="34" cy="38" r="4" fill="#ffccd5"/>
+                <circle cx="58" cy="54" r="22" fill="#f6c46d"/>
+                <ellipse cx="50" cy="50" rx="2.5" ry="3.5" fill="#2d1e18"/>
+                <ellipse cx="44" cy="56" rx="3.5" ry="2" fill="#ff80ab" opacity="0.7"/>
+
+                <!-- Right Polar Bear -->
+                <circle cx="106" cy="38" r="8" fill="#fafafa" stroke="#ffccd5" stroke-width="1"/>
+                <circle cx="106" cy="38" r="4" fill="#ffccd5"/>
+                <circle cx="82" cy="54" r="22" fill="#fafafa" stroke="#ffccd5" stroke-width="0.8"/>
+                <ellipse cx="90" cy="50" rx="2.5" ry="3.5" fill="#2d1e18"/>
+                <ellipse cx="96" cy="56" rx="3.5" ry="2" fill="#ff80ab" opacity="0.7"/>
+
+                <!-- Central Glowing Heart Held Together -->
+                <path d="M 70 78 C 70 78 45 54 45 38 C 45 28 54 22 62 28 C 66 32 70 36 70 36 C 70 36 74 32 78 28 C 86 22 95 28 95 38 C 95 54 70 78 70 78 Z" fill="#ff4d6d" filter="drop-shadow(0 3px 6px rgba(255,77,109,0.3))"/>
+                
+                <!-- Floating Mini Hearts -->
+                <path d="M 70 14 C 70 14 62 6 62 2 C 62 -2 66 -4 70 -2 C 74 -4 78 -2 78 2 C 78 6 70 14 70 14 Z" fill="#ff85a1"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Wavy Line Decoration -->
+        <svg class="wavy-line-accent" viewBox="0 0 140 12">
+          <path d="M 5 6 Q 20 0 35 6 T 65 6 T 95 6 T 125 6" fill="none" stroke="#ff85a1" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+
+        <!-- Special Date Tag -->
+        <div class="date-tag" id="proposal-date-tag">24 • 10 • 2024</div>
+      </div>
+
+      <!-- Proposal Yes / No Buttons -->
+      <div class="proposal-buttons-wrap">
+        <button id="btn-yes-proposal" class="btn-yes" aria-label="Yes, I will be yours">
+          Yes 💖
+        </button>
+        <button id="btn-no-proposal" class="btn-no" aria-label="No">
+          No 💔
+        </button>
+      </div>
+
+      <!-- CRYING PENGUIN OVERLAY (Triggered on NO) -->
+      <div id="crying-overlay" class="crying-overlay" role="dialog" aria-modal="true" aria-label="Why did you click no?">
+        <!-- Crying Penguin SVG with Animated Tear Fountains -->
+        <svg class="crying-penguin-svg" viewBox="0 0 180 190">
+          <defs>
+            <radialGradient id="cryBody" cx="40%" cy="30%" r="70%">
+              <stop offset="0%" stop-color="#78909c"/>
+              <stop offset="100%" stop-color="#455a64"/>
+            </radialGradient>
+          </defs>
+
+          <!-- Water Puddle under Penguin -->
+          <ellipse cx="90" cy="176" rx="60" ry="10" fill="#90e0ef" opacity="0.6"/>
+          <ellipse cx="90" cy="176" rx="40" ry="6" fill="#00b4d8" opacity="0.4"/>
+
+          <!-- Feet -->
+          <ellipse cx="68" cy="170" rx="14" ry="7" fill="#ffa726"/>
+          <ellipse cx="112" cy="170" rx="14" ry="7" fill="#ffa726"/>
+
+          <!-- Shivering Body -->
+          <path d="M 90 28 C 54 28 44 65 44 112 C 44 150 58 166 90 166 C 122 166 136 150 136 112 C 136 65 126 28 90 28 Z" fill="url(#cryBody)"/>
+          <path d="M 90 70 C 70 70 60 95 60 125 C 60 150 72 160 90 160 C 108 160 120 150 120 125 C 120 95 110 70 90 70 Z" fill="#ffffff"/>
+
+          <!-- Trembling Wings -->
+          <path d="M 46 95 C 32 108 28 130 36 140 C 42 135 48 120 50 105 Z" fill="#37474f"/>
+          <path d="M 134 95 C 148 108 152 130 144 140 C 138 135 132 120 130 105 Z" fill="#37474f"/>
+
+          <!-- Squinted Crying Eyes -->
+          <path d="M 68 68 L 78 74 L 68 80" stroke="#1e293b" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <path d="M 112 68 L 102 74 L 112 80" stroke="#1e293b" stroke-width="3" stroke-linecap="round" fill="none"/>
+
+          <!-- Open Quivering Sad Beak -->
+          <path d="M 82 78 Q 90 74 98 78 Q 90 92 82 78 Z" fill="#ff9800"/>
+          <ellipse cx="90" cy="83" rx="4" ry="3" fill="#d90429"/>
+
+          <!-- DRAMATIC TEAR FOUNTAINS (Left and Right) -->
+          <!-- Left Tear Stream -->
+          <path class="tear-stream" d="M 72 74 C 40 50 15 80 20 170" fill="none" stroke="#00b4d8" stroke-width="5" stroke-linecap="round"/>
+          <path class="tear-stream" d="M 72 74 C 45 40 25 70 30 165" fill="none" stroke="#90e0ef" stroke-width="3" stroke-linecap="round" style="animation-delay: 0.25s;"/>
+          
+          <!-- Right Tear Stream -->
+          <path class="tear-stream" d="M 108 74 C 140 50 165 80 160 170" fill="none" stroke="#00b4d8" stroke-width="5" stroke-linecap="round"/>
+          <path class="tear-stream" d="M 108 74 C 135 40 155 70 150 165" fill="none" stroke="#90e0ef" stroke-width="3" stroke-linecap="round" style="animation-delay: 0.25s;"/>
+        </svg>
+
+        <h3 class="crying-title">WHY DID YOU CLICK NO! 🥺😭</h3>
+        <p class="crying-subtitle">My little heart is in a million tiny pieces... That wasn't supposed to happen! 💔</p>
+
+        <button id="btn-try-again" class="btn-try-again">
+          <span>TRY AGAIN 🥺💕</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 6: VIRTUAL HUG
+         ========================================================= -->
+    <section id="screen-6" class="screen" aria-labelledby="s6-heading">
+      <div style="text-align: center;">
+        <span class="badge-pill">So Much Love For You 🤗</span>
+        <h2 id="s6-heading" class="title-cursive" style="font-size: 34px;">Virtual hug for ya!</h2>
+        <p class="subtitle-cute">Wrap your arms around yourself & squeeze... that's me! 💕</p>
+      </div>
+
+      <!-- Two Cute Animated Bears Hugging -->
+      <div class="hug-stage-wrap">
+        <div class="hug-bears-container" id="hug-bears-box">
+          
+          <!-- Glowing Heart Burst in Center -->
+          <svg class="hug-heart-burst" viewBox="0 0 60 60">
+            <path d="M 30 52 C 30 52 8 36 8 20 C 8 10 16 4 24 8 C 27 10 30 14 30 14 C 30 14 33 10 36 8 C 44 4 52 10 52 20 C 52 36 30 52 30 52 Z" fill="#ff4d6d" filter="drop-shadow(0 4px 12px rgba(255,77,109,0.5))"/>
+          </svg>
+
+          <!-- Yellow Teddy Bear (Left) -->
+          <div class="bear-single bear-yellow">
+            <svg viewBox="0 0 140 160" width="100%" height="100%">
+              <defs>
+                <radialGradient id="yBearGrad" cx="40%" cy="30%" r="70%">
+                  <stop offset="0%" stop-color="#ffd166"/>
+                  <stop offset="100%" stop-color="#f4a261"/>
+                </radialGradient>
+              </defs>
+              <!-- Ears -->
+              <circle cx="40" cy="35" r="14" fill="url(#yBearGrad)"/>
+              <circle cx="40" cy="35" r="8" fill="#ffccd5"/>
+              <circle cx="100" cy="35" r="14" fill="url(#yBearGrad)"/>
+              <circle cx="100" cy="35" r="8" fill="#ffccd5"/>
+              <!-- Body -->
+              <ellipse cx="70" cy="115" rx="38" ry="34" fill="url(#yBearGrad)"/>
+              <ellipse cx="70" cy="118" rx="24" ry="20" fill="#fff3b0"/>
+              <!-- Head -->
+              <circle cx="70" cy="65" r="34" fill="url(#yBearGrad)"/>
+              <ellipse cx="70" cy="72" rx="14" ry="10" fill="#fff8e7"/>
+              <ellipse cx="70" cy="68" rx="4" ry="2.8" fill="#4a3b32"/>
+              <!-- Happy Closed Eyes -->
+              <path d="M 54 62 Q 60 56 66 62" stroke="#2d1e18" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <path d="M 74 62 Q 80 56 86 62" stroke="#2d1e18" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <!-- Rosy Blush -->
+              <ellipse cx="48" cy="70" rx="6" ry="3.5" fill="#ff80ab" opacity="0.75"/>
+              <ellipse cx="92" cy="70" rx="6" ry="3.5" fill="#ff80ab" opacity="0.75"/>
+              <!-- Extended Hugging Arm -->
+              <path d="M 88 105 C 115 100 135 110 128 126 C 120 132 100 125 84 122 Z" fill="#f4a261"/>
+            </svg>
+          </div>
+
+          <!-- White Polar Bear (Right) -->
+          <div class="bear-single bear-white">
+            <svg viewBox="0 0 140 160" width="100%" height="100%">
+              <defs>
+                <radialGradient id="wBearGrad" cx="40%" cy="30%" r="70%">
+                  <stop offset="0%" stop-color="#ffffff"/>
+                  <stop offset="100%" stop-color="#f0f2f5"/>
+                </radialGradient>
+              </defs>
+              <!-- Ears -->
+              <circle cx="40" cy="35" r="14" fill="url(#wBearGrad)" stroke="#ffccd5" stroke-width="1"/>
+              <circle cx="40" cy="35" r="8" fill="#ffb3c1"/>
+              <circle cx="100" cy="35" r="14" fill="url(#wBearGrad)" stroke="#ffccd5" stroke-width="1"/>
+              <circle cx="100" cy="35" r="8" fill="#ffb3c1"/>
+              <!-- Body -->
+              <ellipse cx="70" cy="115" rx="38" ry="34" fill="url(#wBearGrad)" stroke="#ffccd5" stroke-width="1"/>
+              <ellipse cx="70" cy="118" rx="24" ry="20" fill="#ffffff"/>
+              <!-- Head -->
+              <circle cx="70" cy="65" r="34" fill="url(#wBearGrad)" stroke="#ffccd5" stroke-width="1"/>
+              <ellipse cx="70" cy="72" rx="14" ry="10" fill="#ffffff"/>
+              <ellipse cx="70" cy="68" rx="4" ry="2.8" fill="#4a3b32"/>
+              <!-- Happy Closed Eyes -->
+              <path d="M 54 62 Q 60 56 66 62" stroke="#2d1e18" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <path d="M 74 62 Q 80 56 86 62" stroke="#2d1e18" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <!-- Rosy Blush -->
+              <ellipse cx="48" cy="70" rx="6" ry="3.5" fill="#ff80ab" opacity="0.75"/>
+              <ellipse cx="92" cy="70" rx="6" ry="3.5" fill="#ff80ab" opacity="0.75"/>
+              <!-- Extended Hugging Arm -->
+              <path d="M 52 105 C 25 100 5 110 12 126 C 20 132 40 125 56 122 Z" fill="#e2e6ea"/>
+            </svg>
+          </div>
+
+        </div>
+      </div>
+
+      <button id="s6-continue-btn" class="btn-cute">
+        <span>One Last Surprise... 💖 ➔</span>
+      </button>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 7: FINAL LOVE SCREEN (TYPEWRITER & RAINING HEARTS)
+         ========================================================= -->
+    <section id="screen-7" class="screen" aria-labelledby="s7-heading">
+      <div class="final-content-box">
+        <!-- Beating Heart Icon -->
+        <svg class="final-heart-icon" viewBox="0 0 60 60">
+          <path d="M 30 52 C 30 52 6 36 6 18 C 6 8 16 2 24 6 C 27 8 30 12 30 12 C 30 12 33 8 36 6 C 44 2 54 8 54 18 C 54 36 30 52 30 52 Z" fill="#ff4d6d"/>
+          <path d="M 22 14 C 18 12 14 16 14 20" stroke="#ffffff" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.6"/>
+        </svg>
+
+        <!-- Typewriter Title -->
+        <h2 id="s7-heading" class="typewriter-title">
+          <span id="typewriter-text"></span><span class="type-cursor" id="type-cursor"></span>
+        </h2>
+
+        <!-- Subtitle Reveal -->
+        <p class="final-subtext" id="final-subtext">
+          More than all the stars in the night sky ✨
+        </p>
+
+        <!-- Replay Button -->
+        <button id="btn-replay" class="btn-cute btn-replay">
+          <span>Replay Our Story 🔄</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SETUP MODAL: CUSTOMIZE PHOTOS & TEXT (Phone Fallback)
+         ========================================================= -->
+    <div id="setup-modal" class="setup-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="setup-title">
+      <div class="setup-sheet">
+        <div class="sheet-header">
+          <h3 id="setup-title" class="sheet-title">Customize Photos & Words</h3>
+          <button id="close-setup-btn" class="sheet-close-btn" aria-label="Close setup modal">✕</button>
+        </div>
+
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">
+          Upload photos directly from your phone or edit messages. All changes save automatically on this device!
+        </p>
+
+        <!-- Photo Pickers -->
+        <span class="setup-label">Pick Photos from Phone 📁</span>
+        <div class="photo-pickers-grid">
+          <label class="photo-picker-box" for="input-photo-letter">
+            <span style="font-size: 20px;">💌</span>
+            <span>Letter Photo</span>
+            <input type="file" id="input-photo-letter" accept="image/*">
+          </label>
+          <label class="photo-picker-box" for="input-photo-gal1">
+            <span style="font-size: 20px;">🌸</span>
+            <span>Gallery Photo 1</span>
+            <input type="file" id="input-photo-gal1" accept="image/*">
+          </label>
+          <label class="photo-picker-box" for="input-photo-gal2">
+            <span style="font-size: 20px;">✨</span>
+            <span>Gallery Photo 2</span>
+            <input type="file" id="input-photo-gal2" accept="image/*">
+          </label>
+          <label class="photo-picker-box" for="input-photo-gal3">
+            <span style="font-size: 20px;">💖</span>
+            <span>Gallery Photo 3</span>
+            <input type="file" id="input-photo-gal3" accept="image/*">
+          </label>
+          <label class="photo-picker-box" for="input-photo-mine" style="grid-column: span 2;">
+            <span style="font-size: 20px;">💍</span>
+            <span>"Will You Be Mine" Photo</span>
+            <input type="file" id="input-photo-mine" accept="image/*">
+          </label>
+        </div>
+
+        <!-- Text Customization -->
+        <div class="setup-field">
+          <label class="setup-label" for="setup-name">Recipient Name / Nickname</label>
+          <input type="text" id="setup-name" class="setup-input" placeholder="e.g. My Cutie">
+        </div>
+
+        <div class="setup-field">
+          <label class="setup-label" for="setup-date">Special Date</label>
+          <input type="text" id="setup-date" class="setup-input" placeholder="e.g. 24 • 10 • 2024">
+        </div>
+
+        <div class="setup-field">
+          <label class="setup-label" for="setup-message">Letter Message</label>
+          <textarea id="setup-message" class="setup-textarea" rows="4" placeholder="Write your heartfelt message here..."></textarea>
+        </div>
+
+        <div class="modal-actions">
+          <button id="reset-defaults-btn" class="btn-secondary">Reset to Cartoon Placeholders</button>
+          <button id="save-setup-btn" class="btn-cute" style="flex: 1;">Save & Done 💖</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- =========================================================
+       JAVASCRIPT: CONFIG, SOUND SYNTHESIZER, CONFETTI & FLOW
+       ========================================================= -->
+  <script>
+    /* =========================================================
+       1. CONFIGURATION OBJECT
+       Easily customize recipient details, message, date and photo paths!
+       If photo URLs are empty (""), adorable cartoon illustrations display.
+       ========================================================= */
+    const CONFIG = {
+      // Recipient details
+      recipientName: "My Cutie",
+      nickname: "Cutie",
+
+      // Screen 3: Letter Poem & Birthday Message
+      letterMessage: `To the sweetest person in my universe ✨
+
+Every moment with you feels like a warm cup of cocoa on a winter day. Your smile lights up every room, and your giggles are my favorite melody.
+
+May your birthday be overflowing with endless joy, delicious cake, cuddles, and all the love you give to this world coming right back to you!
+
+Happy Birthday, my favorite human! 🎂💖`,
+
+      // Screen 4: "Beautiful" Gallery Captions
+      galleryCaptions: [
+        "Sweetest Smile ✨",
+        "Prettiest in the World 🌸",
+        "Forever My Favorite View 💖"
+      ],
+
+      // Screen 5: Special Anniversary / Birthday Date
+      specialDate: "24 • 10 • 2024",
+
+      // Screen 7: Final Typewriter Text
+      finalLoveText: "I Love You",
+      finalSubText: "More than all the stars in the night sky ✨",
+
+      // Photos: Leave empty ("") to show high quality kawaii cartoon illustrations!
+      // Or set relative paths like "photo1.jpg" or data URLs from the setup picker.
+      photos: {
+        letterPhoto: "photo1.jpg",
+        gallery1: "photo1.jpg",
+        gallery2: "photo2.jpg?v=2",
+        gallery3: "photo3.jpg",
+        mineCollage: "photo3.jpg"
+      },
+
+      // Optional Background Music: URL to an MP3 file
+      // If left empty (""), the built-in procedural Music Box synthesizer plays "Happy Birthday"!
+      musicUrl: ""
+    };
+
+    /* =========================================================
+       2. PROCEDURAL WEB AUDIO API (SFX & MUSIC BOX SYNTH)
+       Works 100% offline with zero external audio assets!
+       ========================================================= */
+    class AudioEngine {
+      constructor() {
+        this.ctx = null;
+        this.isPlayingMusic = false;
+        this.musicBoxInterval = null;
+        this.externalAudio = null;
+        this.notes = [
+          { f: 261.63, d: 0.3 }, // C4
+          { f: 261.63, d: 0.3 }, // C4
+          { f: 293.66, d: 0.6 }, // D4
+          { f: 261.63, d: 0.6 }, // C4
+          { f: 349.23, d: 0.6 }, // F4
+          { f: 329.63, d: 1.0 }, // E4
+          { f: 261.63, d: 0.3 }, // C4
+          { f: 261.63, d: 0.3 }, // C4
+          { f: 293.66, d: 0.6 }, // D4
+          { f: 261.63, d: 0.6 }, // C4
+          { f: 392.00, d: 0.6 }, // G4
+          { f: 349.23, d: 1.0 }, // F4
+          { f: 261.63, d: 0.3 }, // C4
+          { f: 261.63, d: 0.3 }, // C4
+          { f: 523.25, d: 0.6 }, // C5
+          { f: 440.00, d: 0.6 }, // A4
+          { f: 349.23, d: 0.6 }, // F4
+          { f: 329.63, d: 0.6 }, // E4
+          { f: 293.66, d: 0.8 }, // D4
+          { f: 466.16, d: 0.4 }, // Bb4
+          { f: 466.16, d: 0.4 }, // Bb4
+          { f: 440.00, d: 0.6 }, // A4
+          { f: 349.23, d: 0.6 }, // F4
+          { f: 392.00, d: 0.6 }, // G4
+          { f: 349.23, d: 1.2 }  // F4
+        ];
+        this.noteIndex = 0;
+      }
+
+      initContext() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) {
+            this.ctx = new AudioContext();
+          }
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      // Cute pop sound for button taps
+      playPop() {
+        this.initContext();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          const now = this.ctx.currentTime;
+          osc.frequency.setValueAtTime(380, now);
+          osc.frequency.exponentialRampToValueAtTime(750, now + 0.1);
+          gain.gain.setValueAtTime(0.3, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.13);
+        } catch (e) {}
+
+        // Small haptic vibration for mobile phones
+        if (navigator.vibrate) {
+          navigator.vibrate(12);
+        }
+      }
+
+      // Sparkle chime sound
+      playSparkle() {
+        this.initContext();
+        if (!this.ctx) return;
+        const freqs = [523.25, 659.25, 783.99, 1046.50];
+        freqs.forEach((freq, idx) => {
+          setTimeout(() => {
+            try {
+              const osc = this.ctx.createOscillator();
+              const gain = this.ctx.createGain();
+              osc.type = 'triangle';
+              const now = this.ctx.currentTime;
+              osc.frequency.setValueAtTime(freq, now);
+              gain.gain.setValueAtTime(0.18, now);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+              osc.connect(gain);
+              gain.connect(this.ctx.destination);
+              osc.start(now);
+              osc.stop(now + 0.36);
+            } catch (e) {}
+          }, idx * 60);
+        });
+      }
+
+      // Sad cartoon wah-wah sound for "No" button
+      playWahWah() {
+        this.initContext();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          const now = this.ctx.currentTime;
+          osc.frequency.setValueAtTime(320, now);
+          osc.frequency.exponentialRampToValueAtTime(140, now + 0.45);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.48);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.5);
+        } catch (e) {}
+
+        if (navigator.vibrate) {
+          navigator.vibrate([30, 40, 60]);
+        }
+      }
+
+      // Hug warm chime
+      playHugChime() {
+        this.initContext();
+        if (!this.ctx) return;
+        [440, 554.37, 659.25].forEach((freq) => {
+          try {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            const now = this.ctx.currentTime;
+            osc.frequency.setValueAtTime(freq, now);
+            gain.gain.setValueAtTime(0.2, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(now);
+            osc.stop(now + 1.25);
+          } catch (e) {}
+        });
+      }
+
+      // Procedural Music Box Note (Plucked metal tine chime)
+      playMusicBoxTine(freq, duration) {
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          const now = this.ctx.currentTime;
+          osc.frequency.setValueAtTime(freq * 1.5, now); // Sweet bell pitch
+          gain.gain.setValueAtTime(0.18, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + duration + 0.05);
+        } catch (e) {}
+      }
+
+      // Start looping background music
+      startMusic() {
+        this.initContext();
+        if (this.isPlayingMusic) return;
+
+        // If external MP3 URL is provided, play it
+        if (CONFIG.musicUrl && CONFIG.musicUrl.trim() !== "") {
+          if (!this.externalAudio) {
+            this.externalAudio = new Audio(CONFIG.musicUrl);
+            this.externalAudio.loop = true;
+          }
+          this.externalAudio.play().then(() => {
+            this.isPlayingMusic = true;
+            updateMusicButtonState(true);
+          }).catch(() => {
+            // Fallback to synthesized music box if blocked or offline
+            this.startMusicBox();
+          });
+          return;
+        }
+
+        // Default: procedural music box melody
+        this.startMusicBox();
+      }
+
+      startMusicBox() {
+        this.isPlayingMusic = true;
+        updateMusicButtonState(true);
+        this.noteIndex = 0;
+        
+        const tick = () => {
+          if (!this.isPlayingMusic) return;
+          const current = this.notes[this.noteIndex];
+          this.playMusicBoxTine(current.f, current.d * 1.6);
+          this.noteIndex = (this.noteIndex + 1) % this.notes.length;
+          const nextDelay = current.d * 750;
+          this.musicBoxInterval = setTimeout(tick, nextDelay);
+        };
+        tick();
+      }
+
+      stopMusic() {
+        this.isPlayingMusic = false;
+        if (this.musicBoxInterval) {
+          clearTimeout(this.musicBoxInterval);
+          this.musicBoxInterval = null;
+        }
+        if (this.externalAudio) {
+          this.externalAudio.pause();
+        }
+        updateMusicButtonState(false);
+      }
+
+      toggleMusic() {
+        if (this.isPlayingMusic) {
+          this.stopMusic();
+        } else {
+          this.startMusic();
+        }
+      }
+    }
+
+    const audio = new AudioEngine();
+
+    function updateMusicButtonState(isPlaying) {
+      const btn = document.getElementById('music-toggle-btn');
+      const icon = document.getElementById('music-icon');
+      if (isPlaying) {
+        btn.classList.add('playing');
+        icon.textContent = '🎵';
+      } else {
+        btn.classList.remove('playing');
+        icon.textContent = '🔇';
+      }
+    }
+
+    document.getElementById('music-toggle-btn').addEventListener('click', () => {
+      audio.toggleMusic();
+    });
+
+    /* =========================================================
+       3. CONFETTI & FLOATING HEARTS CANVAS ENGINE
+       Pastel ribbons, sparkling stars, and gentle heart showers!
+       ========================================================= */
+    class ParticleEngine {
+      constructor(canvasId) {
+        this.canvas = document.getElementById(canvasId);
+        this.ctx = this.canvas.getContext('2d');
+        this.particles = [];
+        this.isRainingHearts = false;
+        this.animFrame = null;
+        this.colors = ['#ff85a1', '#fb6f92', '#ffd166', '#06d6a0', '#b7e4c7', '#ffcad4', '#ff758f'];
+
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+        this.loop();
+      }
+
+      resize() {
+        const container = document.getElementById('app-container');
+        this.canvas.width = container.clientWidth;
+        this.canvas.height = container.clientHeight;
+      }
+
+      burst(count = 70, originX = null, originY = null) {
+        const x = originX !== null ? originX : this.canvas.width / 2;
+        const y = originY !== null ? originY : this.canvas.height / 3;
+
+        for (let i = 0; i < count; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = 3 + Math.random() * 8;
+          this.particles.push({
+            x: x,
+            y: y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed - 2,
+            size: 6 + Math.random() * 8,
+            color: this.colors[Math.floor(Math.random() * this.colors.length)],
+            rotation: Math.random() * 360,
+            vRot: (Math.random() - 0.5) * 12,
+            shape: Math.random() > 0.4 ? 'rect' : (Math.random() > 0.5 ? 'heart' : 'circle'),
+            alpha: 1,
+            gravity: 0.22,
+            drag: 0.96,
+            life: 1
+          });
+        }
+      }
+
+      heartBurst(originX, originY) {
+        for (let i = 0; i < 40; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = 2 + Math.random() * 6;
+          this.particles.push({
+            x: originX,
+            y: originY,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed - 3,
+            size: 10 + Math.random() * 12,
+            color: Math.random() > 0.5 ? '#ff4d6d' : '#ff85a1',
+            rotation: (Math.random() - 0.5) * 30,
+            vRot: (Math.random() - 0.5) * 4,
+            shape: 'heart',
+            alpha: 1,
+            gravity: 0.15,
+            drag: 0.97,
+            life: 1
+          });
+        }
+      }
+
+      startHeartRain() {
+        this.isRainingHearts = true;
+      }
+
+      stopHeartRain() {
+        this.isRainingHearts = false;
+      }
+
+      drawHeart(x, y, size, color, alpha, rotation) {
+        this.ctx.save();
+        this.ctx.translate(x, y);
+        this.ctx.rotate((rotation * Math.PI) / 180);
+        this.ctx.globalAlpha = Math.max(0, alpha);
+        this.ctx.fillStyle = color;
+        this.ctx.beginPath();
+        const topCurveHeight = size * 0.3;
+        this.ctx.moveTo(0, topCurveHeight);
+        this.ctx.bezierCurveTo(0, 0, -size / 2, 0, -size / 2, topCurveHeight);
+        this.ctx.bezierCurveTo(-size / 2, (size + topCurveHeight) / 2, 0, (size + topCurveHeight) / 1.4, 0, size);
+        this.ctx.bezierCurveTo(0, (size + topCurveHeight) / 1.4, size / 2, (size + topCurveHeight) / 2, size / 2, topCurveHeight);
+        this.ctx.bezierCurveTo(size / 2, 0, 0, 0, 0, topCurveHeight);
+        this.ctx.closePath();
+        this.ctx.fill();
+        this.ctx.restore();
+      }
+
+      loop() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        // Continuously generate raining hearts if on final screen
+        if (this.isRainingHearts && Math.random() < 0.25) {
+          this.particles.push({
+            x: Math.random() * this.canvas.width,
+            y: -20,
+            vx: (Math.random() - 0.5) * 1.5,
+            vy: 1.5 + Math.random() * 2,
+            size: 10 + Math.random() * 14,
+            color: Math.random() > 0.4 ? '#ff85a1' : (Math.random() > 0.5 ? '#fb6f92' : '#ffccd5'),
+            rotation: (Math.random() - 0.5) * 30,
+            vRot: (Math.random() - 0.5) * 2,
+            shape: 'heart',
+            alpha: 0.85,
+            gravity: 0.02,
+            drag: 0.99,
+            life: 1
+          });
+        }
+
+        for (let i = this.particles.length - 1; i >= 0; i--) {
+          const p = this.particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += p.gravity;
+          p.vx *= p.drag;
+          p.rotation += p.vRot;
+          p.life -= 0.007;
+          p.alpha = Math.min(p.alpha, p.life);
+
+          if (p.shape === 'heart') {
+            this.drawHeart(p.x, p.y, p.size, p.color, p.alpha, p.rotation);
+          } else if (p.shape === 'rect') {
+            this.ctx.save();
+            this.ctx.translate(p.x, p.y);
+            this.ctx.rotate((p.rotation * Math.PI) / 180);
+            this.ctx.globalAlpha = Math.max(0, p.alpha);
+            this.ctx.fillStyle = p.color;
+            this.ctx.fillRect(-p.size / 2, -p.size / 3, p.size, p.size * 0.6);
+            this.ctx.restore();
+          } else {
+            this.ctx.save();
+            this.ctx.globalAlpha = Math.max(0, p.alpha);
+            this.ctx.fillStyle = p.color;
+            this.ctx.beginPath();
+            this.ctx.arc(p.x, p.y, p.size / 2, 0, Math.PI * 2);
+            this.ctx.fill();
+            this.ctx.restore();
+          }
+
+          if (p.y > this.canvas.height + 40 || p.life <= 0) {
+            this.particles.splice(i, 1);
+          }
+        }
+
+        this.animFrame = requestAnimationFrame(() => this.loop());
+      }
+    }
+
+    const particles = new ParticleEngine('confetti-canvas');
+
+    /* =========================================================
+       4. SCREEN NAVIGATION & INTERACTIVITY
+       ========================================================= */
+    let currentScreenIndex = 1;
+    let noClickCount = 0;
+    let typewriterInterval = null;
+
+    function goToScreen(targetIndex) {
+      if (targetIndex === currentScreenIndex) return;
+
+      const currentScreen = document.getElementById(`screen-${currentScreenIndex}`);
+      const nextScreen = document.getElementById(`screen-${targetIndex}`);
+
+      if (!nextScreen) return;
+
+      // Exit current screen
+      currentScreen.classList.remove('active');
+      currentScreen.classList.add('exit-left');
+
+      setTimeout(() => {
+        currentScreen.classList.remove('exit-left');
+      }, 500);
+
+      // Enter next screen
+      nextScreen.classList.add('active');
+      currentScreenIndex = targetIndex;
+
+      // Trigger screen-specific animations
+      handleScreenArrival(targetIndex);
+    }
+
+    function handleScreenArrival(screenNum) {
+      if (screenNum === 2) {
+        // Confetti burst on birthday celebration
+        setTimeout(() => {
+          particles.burst(80);
+          audio.playSparkle();
+        }, 200);
+      } else if (screenNum === 4) {
+        // Staggered gallery photos reveal
+        const cards = [
+          document.getElementById('gallery-card-1'),
+          document.getElementById('gallery-card-2'),
+          document.getElementById('gallery-card-3')
+        ];
+        cards.forEach((card, i) => {
+          card.classList.remove('revealed');
+          setTimeout(() => {
+            card.classList.add('revealed');
+            audio.playPop();
+          }, 250 + i * 350);
+        });
+      } else if (screenNum === 6) {
+        // Trigger Virtual Hug animation
+        const hugBox = document.getElementById('hug-bears-box');
+        hugBox.classList.remove('hugging');
+        setTimeout(() => {
+          hugBox.classList.add('hugging');
+          audio.playHugChime();
+          // Heart burst behind bears
+          const rect = hugBox.getBoundingClientRect();
+          const containerRect = document.getElementById('app-container').getBoundingClientRect();
+          particles.heartBurst(rect.left - containerRect.left + rect.width / 2, rect.top - containerRect.top + 50);
+        }, 500);
+      } else if (screenNum === 7) {
+        // Screen 7: Typewriter "I Love You" + Raining Hearts
+        startTypewriter();
+        particles.startHeartRain();
+      }
+    }
+
+    // Typewriter effect for Screen 7
+    function startTypewriter() {
+      const textElem = document.getElementById('typewriter-text');
+      const cursorElem = document.getElementById('type-cursor');
+      const subtextElem = document.getElementById('final-subtext');
+      const replayBtn = document.getElementById('btn-replay');
+
+      textElem.textContent = '';
+      subtextElem.classList.remove('visible');
+      replayBtn.classList.remove('visible');
+      cursorElem.style.display = 'inline-block';
+
+      if (typewriterInterval) clearInterval(typewriterInterval);
+
+      const targetText = CONFIG.finalLoveText || "I Love You";
+      let charIdx = 0;
+
+      typewriterInterval = setInterval(() => {
+        if (charIdx < targetText.length) {
+          textElem.textContent += targetText[charIdx];
+          charIdx++;
+          audio.playPop();
+        } else {
+          clearInterval(typewriterInterval);
+          cursorElem.style.display = 'none';
+          setTimeout(() => {
+            subtextElem.classList.add('visible');
+            audio.playSparkle();
+          }, 350);
+          setTimeout(() => {
+            replayBtn.classList.add('visible');
+          }, 900);
+        }
+      }, 130);
+    }
+
+    /* =========================================================
+       5. EVENT LISTENERS & FLOW SETUP
+       ========================================================= */
+    // Screen 1: Choose Penguin
+    function onPenguinPick(penguinName) {
+      audio.playPop();
+      audio.startMusic(); // Autoplay starts on first user tap!
+      particles.burst(40);
+      goToScreen(2);
+    }
+
+    document.getElementById('pick-brown-penguin').addEventListener('click', () => onPenguinPick('Coco'));
+    document.getElementById('pick-grey-penguin').addEventListener('click', () => onPenguinPick('Pebble'));
+
+    // Screen 2: Continue
+    document.getElementById('s2-continue-btn').addEventListener('click', () => {
+      audio.playPop();
+      goToScreen(3);
+    });
+
+    // Screen 3: Continue
+    document.getElementById('s3-continue-btn').addEventListener('click', () => {
+      audio.playPop();
+      goToScreen(4);
+    });
+
+    // Screen 4: Continue
+    document.getElementById('s4-continue-btn').addEventListener('click', () => {
+      audio.playPop();
+      goToScreen(5);
+    });
+
+    // Screen 5: "Will you be mine?" - YES & NO Interactions
+    const btnYes = document.getElementById('btn-yes-proposal');
+    const btnNo = document.getElementById('btn-no-proposal');
+    const cryingOverlay = document.getElementById('crying-overlay');
+    const btnTryAgain = document.getElementById('btn-try-again');
+
+    // YES Clicked
+    btnYes.addEventListener('click', (e) => {
+      audio.playSparkle();
+      const rect = btnYes.getBoundingClientRect();
+      const containerRect = document.getElementById('app-container').getBoundingClientRect();
+      particles.heartBurst(rect.left - containerRect.left + rect.width / 2, rect.top - containerRect.top + rect.height / 2);
+      setTimeout(() => {
+        goToScreen(6);
+      }, 600);
+    });
+
+    // Runaway "No" Button (Bhagne wala button - impossible to click!)
+    function dodgeNoButton(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      audio.playPop();
+      noClickCount++;
+
+      const screen = document.getElementById('screen-5');
+      const screenRect = screen.getBoundingClientRect();
+      const btnRect = btnNo.getBoundingClientRect();
+
+      btnNo.style.position = 'absolute';
+      btnNo.style.zIndex = '60';
+
+      // Keep within bounds of screen-5
+      const pad = 24;
+      const minX = pad;
+      const maxX = Math.max(minX, screenRect.width - btnRect.width - pad);
+
+      // Keep mostly in the lower half of screen
+      const minY = Math.floor(screenRect.height * 0.45);
+      const maxY = Math.max(minY, screenRect.height - btnRect.height - 30);
+
+      const newX = Math.floor(Math.random() * (maxX - minX + 1)) + minX;
+      const newY = Math.floor(Math.random() * (maxY - minY + 1)) + minY;
+
+      btnNo.style.left = `${newX}px`;
+      btnNo.style.top = `${newY}px`;
+
+      // Yes button grows bigger every time!
+      const yesScale = Math.min(2.4, 1 + noClickCount * 0.18);
+      btnYes.style.transform = `scale(${yesScale})`;
+
+      // Playful cheeky Hinglish & Hindi texts
+      const cheekyTexts = [
+        "No 💔",
+        "Pakad ke dikhao! 😜",
+        "Miss ho gaya! 🏃‍♂️💨",
+        "Idhar nahi! 😂",
+        "Yes hi dabana padega! 💖",
+        "Naah! 🙈",
+        "Try karte raho! 🚀",
+        "Click Yes please! 💕",
+        "Koshish achhi thi! 😝",
+        "Sirf YES allowed hai! ✨"
+      ];
+      btnNo.textContent = cheekyTexts[Math.min(noClickCount, cheekyTexts.length - 1)];
+
+      // Little burst of sparkles where it moved
+      particles.burst(8, newX + btnRect.width / 2, newY + btnRect.height / 2);
+    }
+
+    // Attach all desktop & mobile pointer/touch events to dodge instantly
+    ['pointerdown', 'touchstart', 'mousedown', 'mouseenter', 'mouseover', 'click'].forEach(evt => {
+      btnNo.addEventListener(evt, dodgeNoButton, { passive: false });
+    });
+
+    // Try Again on Crying Screen (if ever opened)
+    btnTryAgain.addEventListener('click', () => {
+      audio.playPop();
+      cryingOverlay.classList.remove('active');
+    });
+
+    // Screen 6: Continue to Screen 7
+    document.getElementById('s6-continue-btn').addEventListener('click', () => {
+      audio.playPop();
+      goToScreen(7);
+    });
+
+    // Screen 7: Replay
+    document.getElementById('btn-replay').addEventListener('click', () => {
+      audio.playPop();
+      particles.stopHeartRain();
+      noClickCount = 0;
+      btnNo.style.position = '';
+      btnNo.style.left = '';
+      btnNo.style.top = '';
+      btnNo.style.transform = 'scale(1)';
+      btnNo.textContent = 'No 💔';
+      btnYes.style.transform = 'scale(1)';
+      goToScreen(1);
+    });
+
+    /* =========================================================
+       6. UI POPULATION & DYNAMIC CONFIG UPDATES
+       ========================================================= */
+    function populateConfigData() {
+      // Screen 2
+      document.getElementById('recipient-name-subtitle').textContent = `For ${CONFIG.recipientName || 'You'}, with all my love! 🍰`;
+
+      // Screen 3
+      document.getElementById('letter-dear-title').textContent = `Dearest ${CONFIG.nickname || CONFIG.recipientName},`;
+      document.getElementById('letter-message-content').textContent = CONFIG.letterMessage;
+
+      // Screen 4 Captions
+      if (CONFIG.galleryCaptions && CONFIG.galleryCaptions.length >= 3) {
+        document.getElementById('gallery-cap-1').textContent = CONFIG.galleryCaptions[0];
+        document.getElementById('gallery-cap-2').textContent = CONFIG.galleryCaptions[1];
+        document.getElementById('gallery-cap-3').textContent = CONFIG.galleryCaptions[2];
+      }
+
+      // Screen 5 Date
+      document.getElementById('proposal-date-tag').textContent = CONFIG.specialDate || "24 • 10 • 2024";
+
+      // Screen 7 Subtext
+      document.getElementById('final-subtext').textContent = CONFIG.finalSubText || "More than all the stars in the night sky ✨";
+
+      // Render Photos (Or fallback cartoons)
+      renderPhotoSlot('letter-photo-slot', CONFIG.photos.letterPhoto);
+      renderPhotoSlot('gallery-slot-1', CONFIG.photos.gallery1);
+      renderPhotoSlot('gallery-slot-2', CONFIG.photos.gallery2);
+      renderPhotoSlot('gallery-slot-3', CONFIG.photos.gallery3);
+      renderPhotoSlot('mine-collage-slot', CONFIG.photos.mineCollage);
+    }
+
+    function renderPhotoSlot(slotId, photoUrl) {
+      const slot = document.getElementById(slotId);
+      if (!slot) return;
+
+      if (photoUrl && photoUrl.trim() !== "") {
+        // User provided photo
+        slot.innerHTML = `<img src="${photoUrl}" alt="Photo" style="width:100%; height:100%; object-fit:cover;">`;
+      }
+      // If empty, the existing cute cartoon SVG placeholder stays preserved!
+    }
+
+    /* =========================================================
+       7. SETUP MODAL & LOCAL FILE PICKER FALLBACK
+       Allows selecting photos from phone via URL.createObjectURL!
+       ========================================================= */
+    const setupModal = document.getElementById('setup-modal');
+    const setupBtn = document.getElementById('setup-btn');
+    const closeSetupBtn = document.getElementById('close-setup-btn');
+    const saveSetupBtn = document.getElementById('save-setup-btn');
+    const resetDefaultsBtn = document.getElementById('reset-defaults-btn');
+
+    // Inputs
+    const setupNameInput = document.getElementById('setup-name');
+    const setupDateInput = document.getElementById('setup-date');
+    const setupMessageInput = document.getElementById('setup-message');
+
+    // Load saved preferences from localStorage if previously stored
+    function loadSavedStorage() {
+      try {
+        const saved = localStorage.getItem('bday_surprise_config');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed.recipientName) CONFIG.recipientName = parsed.recipientName;
+          if (parsed.letterMessage) CONFIG.letterMessage = parsed.letterMessage;
+          if (parsed.specialDate) CONFIG.specialDate = parsed.specialDate;
+          if (parsed.photos) {
+            for (let k in parsed.photos) {
+              if (parsed.photos[k] && parsed.photos[k].trim() !== "") {
+                CONFIG.photos[k] = parsed.photos[k];
+              }
+            }
+          }
+        }
+      } catch (e) {}
+    }
+
+    loadSavedStorage();
+    populateConfigData();
+
+    // Open Setup Modal
+    setupBtn.addEventListener('click', () => {
+      audio.playPop();
+      setupNameInput.value = CONFIG.recipientName;
+      setupDateInput.value = CONFIG.specialDate;
+      setupMessageInput.value = CONFIG.letterMessage;
+      setupModal.classList.add('open');
+    });
+
+    closeSetupBtn.addEventListener('click', () => {
+      audio.playPop();
+      setupModal.classList.remove('open');
+    });
+
+    // Handle File Pickers
+    function handlePhotoInput(inputId, configPhotoKey, slotId) {
+      document.getElementById(inputId).addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const blobUrl = URL.createObjectURL(file);
+          CONFIG.photos[configPhotoKey] = blobUrl;
+          renderPhotoSlot(slotId, blobUrl);
+          audio.playSparkle();
+        }
+      });
+    }
+
+    handlePhotoInput('input-photo-letter', 'letterPhoto', 'letter-photo-slot');
+    handlePhotoInput('input-photo-gal1', 'gallery1', 'gallery-slot-1');
+    handlePhotoInput('input-photo-gal2', 'gallery2', 'gallery-slot-2');
+    handlePhotoInput('input-photo-gal3', 'gallery3', 'gallery-slot-3');
+    handlePhotoInput('input-photo-mine', 'mineCollage', 'mine-collage-slot');
+
+    // Save and Apply Changes
+    saveSetupBtn.addEventListener('click', () => {
+      audio.playSparkle();
+      CONFIG.recipientName = setupNameInput.value.trim() || "My Cutie";
+      CONFIG.specialDate = setupDateInput.value.trim() || "24 • 10 • 2024";
+      CONFIG.letterMessage = setupMessageInput.value.trim() || CONFIG.letterMessage;
+
+      try {
+        localStorage.setItem('bday_surprise_config', JSON.stringify({
+          recipientName: CONFIG.recipientName,
+          specialDate: CONFIG.specialDate,
+          letterMessage: CONFIG.letterMessage
+        }));
+      } catch (e) {}
+
+      populateConfigData();
+      setupModal.classList.remove('open');
+    });
+
+    // Reset to Default Photos
+    resetDefaultsBtn.addEventListener('click', () => {
+      audio.playPop();
+      CONFIG.photos = {
+        letterPhoto: "photo1.jpg",
+        gallery1: "photo1.jpg",
+        gallery2: "photo2.jpg",
+        gallery3: "photo3.jpg",
+        mineCollage: "photo3.jpg"
+      };
+      try {
+        localStorage.removeItem('bday_surprise_config');
+      } catch (e) {}
+      location.reload();
+    });
+
+  </script>
+</body>
+</html>
